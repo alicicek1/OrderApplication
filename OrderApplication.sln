@@ -15,15 +15,20 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{39
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{68BE69E2-DFD5-4B15-B66B-83E4DEC6EBF8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderApplication.Model", "OrderApplication.Model\OrderApplication.Model.csproj", "{9B3244ED-AC32-4971-83D2-0BBB18C1042E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderApplication.Model", "OrderApplication.Model\OrderApplication.Model.csproj", "{9B3244ED-AC32-4971-83D2-0BBB18C1042E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderApplication.Core", "OrderApplication.Core\OrderApplication.Core.csproj", "{81773B9A-FFDF-4BEB-B9E6-DFDC73A4D6FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderApplication.Core", "OrderApplication.Core\OrderApplication.Core.csproj", "{81773B9A-FFDF-4BEB-B9E6-DFDC73A4D6FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderApplication.Business", "OrderApplication.Business\OrderApplication.Business.csproj", "{EC003CF5-6535-4AF5-A340-60A3A3CF091D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderApplication.Business", "OrderApplication.Business\OrderApplication.Business.csproj", "{EC003CF5-6535-4AF5-A340-60A3A3CF091D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderApplication.Test", "OrderApplication.Test\OrderApplication.Test.csproj", "{F56E3362-0525-4015-A1E8-6131A5E42280}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderApplication.Test", "OrderApplication.Test\OrderApplication.Test.csproj", "{F56E3362-0525-4015-A1E8-6131A5E42280}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderApplication.Api", "OrderApplication.Api\OrderApplication.Api.csproj", "{DD189A17-7364-475D-9EFE-C4283F7BF37A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A2BD372C-12B4-4182-8FDD-D50CD8A11F8D}"
+	ProjectSection(SolutionItems) = preProject
+		Notes.txt = Notes.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
