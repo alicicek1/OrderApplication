@@ -22,9 +22,14 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.RoutePrefix = "";
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "OrderApp v1");
+    });
 }
 
+app.UseWelcomePage("/swagger");
 app.UseAuthorization();
 
 app.MapControllers();

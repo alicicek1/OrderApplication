@@ -1,1 +1,4 @@
 https://order-application-dotnet.herokuapp.com/
+https://order-app.onrender.com/
+https://order-app.onrender.com/api/Orders
+https://order-app.onrender.com/api/Customers
