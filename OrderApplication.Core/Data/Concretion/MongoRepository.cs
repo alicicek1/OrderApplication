@@ -61,8 +61,7 @@ namespace OrderApplication.Core.Data.Concretion
 
         public virtual TDocument FindByObjectId(string id)
         {
-            var objectId = new ObjectId(id);
-            var filter = Builders<TDocument>.Filter.Eq(doc => doc.ObjectId, objectId);
+            var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, id);
             return _collection.Find(filter).SingleOrDefault();
         }
 
@@ -76,8 +75,7 @@ namespace OrderApplication.Core.Data.Concretion
         {
             return Task.Run(() =>
             {
-                var objectId = new ObjectId(id);
-                var filter = Builders<TDocument>.Filter.Eq(doc => doc.ObjectId, objectId);
+                var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, id);
                 return _collection.Find(filter).SingleOrDefaultAsync();
             });
         }
@@ -94,7 +92,7 @@ namespace OrderApplication.Core.Data.Concretion
 
         public virtual async Task ReplaceOneAsync(TDocument document)
         {
-            var filter = Builders<TDocument>.Filter.Eq(doc => doc.ObjectId, document.ObjectId);
+            var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, document.Id);
             await _collection.FindOneAndReplaceAsync(filter, document);
         }
 
@@ -107,8 +105,7 @@ namespace OrderApplication.Core.Data.Concretion
         {
             return Task.Run(() =>
             {
-                var objectId = new ObjectId(id);
-                var filter = Builders<TDocument>.Filter.Eq(doc => doc.ObjectId, objectId);
+                var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, id);
                 _collection.FindOneAndDeleteAsync(filter);
             });
         }
@@ -126,7 +123,7 @@ namespace OrderApplication.Core.Data.Concretion
 
         public void ReplaceOne(TDocument document)
         {
-            var filter = Builders<TDocument>.Filter.Eq(doc => doc.ObjectId, document.ObjectId);
+            var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, document.Id);
             _collection.FindOneAndReplace(filter, document);
         }
 

@@ -1,13 +1,17 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using OrderApplication.Core.Business.Abstraction.Mongo;
 using OrderApplication.Core.Data.Abstraction.Mongo;
+using OrderApplication.Core.Model.Constant.Error;
 using OrderApplication.Core.Model.Document;
+using OrderApplication.Core.Model.Util.Error;
 using OrderApplication.Core.Model.Util.Response;
 using System.Linq.Expressions;
+using System.Threading;
 
 namespace OrderApplication.Core.Business.Concretion.Mongo
 {
-    public class MongoService<TDocument> : IMongoService<TDocument> where TDocument : IDocument
+    public class MongoService<TDocument> : IMongoService<TDocument> where TDocument : IDocument, new()
     {
         private readonly IMongoRepository<TDocument> mongoRepository;
 
@@ -126,19 +130,37 @@ namespace OrderApplication.Core.Business.Concretion.Mongo
         public virtual DataResponse ReplaceOne(TDocument document)
         {
             mongoRepository.ReplaceOneAsync(document);
-            return new DataResponse();
+            var updateDocument = mongoRepository.FindByObjectId(document.Id.ToString());
+            if (updateDocument != null)
+                return new SuccessDataResponse { Document = updateDocument };
+            else
+                return ErrorDataResponse(ErrorConstant.MODEL_DID_NOT_UPDATED);
         }
 
         public virtual DataResponse InsertOne(TDocument document)
         {
+            do
+            {
+                document.Id = ObjectId.GenerateNewId().ToString();
+            } while (mongoRepository.FindByObjectId(document.Id.ToString()) != null);
+
             mongoRepository.InsertOneAsync(document);
-            return new DataResponse();
+            Thread.Sleep(500);
+
+            var newDocument = mongoRepository.FindByObjectId(document.Id.ToString());
+            if (newDocument != null)
+                return new SuccessDataResponse { Document = newDocument };
+            else
+                return ErrorDataResponse(ErrorConstant.MODEL_DID_NOT_INSERTED);
         }
 
         public DataResponse DeleteOne(string id)
         {
             mongoRepository.DeleteByIdAsync(id);
-            return new DataResponse();
+            if (mongoRepository.FindByObjectId(id) == null)
+                return new DataResponse() { IsSuccessful = true };
+            else
+                return ErrorDataResponse(ErrorConstant.MODEL_DID_NOT_DELETED);
         }
 
 
@@ -152,5 +174,16 @@ namespace OrderApplication.Core.Business.Concretion.Mongo
             return mongoRepository.GetCountBy(filterExpression);
         }
 
+
+        protected DataResponse ErrorDataResponse(BaseServiceErrorConstant model)
+        {
+            return new DataResponse
+            {
+                IsSuccessful = false,
+                ErrorCode = model.Code,
+                ErrorMessageList = new List<string> { model.Message },
+                HttpStatusCode = model.HttpStatusCode
+            };
+        }
     }
 }

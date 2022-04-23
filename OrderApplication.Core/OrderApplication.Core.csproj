@@ -1,22 +1,22 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Model\Util\Api\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="Model\Util\Api\" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Castle.Core" Version="4.4.1" />
-    <PackageReference Include="FluentValidation" Version="10.4.0" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Include="MongoDB.Bson" Version="2.15.0" />
-    <PackageReference Include="MongoDB.Driver" Version="2.15.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Castle.Core" Version="4.4.1" />
+		<PackageReference Include="FluentValidation" Version="10.4.0" />
+		<PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.8" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
+		<PackageReference Include="MongoDB.Bson" Version="2.15.0" />
+		<PackageReference Include="MongoDB.Driver" Version="2.15.0" />
+	</ItemGroup>
 
 </Project>

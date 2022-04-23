@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OrderApplication.Business.Service.Abstraction.Mongo;
 using OrderApplication.Core.Api.Controller;
-using OrderApplication.Model.Document;
+using OrderApplication.Model.Document.Common.Customer;
 
 namespace OrderApplication.Api.Controllers
 {
@@ -27,21 +27,21 @@ namespace OrderApplication.Api.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]Customer customer)
+        public IActionResult Post([FromBody] NewCustomerModel customer)
         {
-            return ApiResponse(customerService.InsertOne(customer));
+            return ApiDocumentResponse(customerService.InsertOne(customer));
         }
 
         [HttpPut]
-        public IActionResult Put([FromBody] Customer customer)
+        public IActionResult Put([FromBody] UpdateCustomerModel customer)
         {
-            return ApiResponse(customerService.ReplaceOne(customer));
+            return ApiDocumentResponse(customerService.ReplaceOne(customer));
         }
 
         [HttpDelete]
         public IActionResult Delete(string id)
         {
-            return ApiResponse(customerService.DeleteOne(id));
+            return ApiDocumentResponse(customerService.DeleteOne(id));
         }
     }
 }

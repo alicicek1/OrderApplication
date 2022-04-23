@@ -1,13 +1,14 @@
-﻿using OrderApplication.Core.Model.Document;
+﻿using OrderApplication.Core.Extension;
+using OrderApplication.Core.Model.Document;
 
 namespace OrderApplication.Core.Model.Util.Response
 {
     public class SuccessDataResponse : DataResponse
     {
-        public SuccessDataResponse(IDocument document)
+        public SuccessDataResponse()
         {
             this.IsSuccessful = true;
-            this.Document = document;
+            this.HttpStatusCode = System.Net.HttpStatusCode.OK;
         }
     }
 }

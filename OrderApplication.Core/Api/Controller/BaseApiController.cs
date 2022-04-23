@@ -25,7 +25,7 @@ namespace OrderApplication.Core.Api.Controller
         {
             if (result.IsSuccessful)
             {
-                return Ok(new SuccessDataResponse(result.Document));
+                return Ok(result.Document);
             }
             else
             {

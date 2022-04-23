@@ -14,11 +14,11 @@ namespace OrderApplication.Model.Document
         public string Status { get; set; }
         public Address Address { get; set; }
         public Product Product { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; }
         [BsonIgnoreIfNull]
         public DateTime? UpdatedAt { get; set; }
 
         [BsonIgnore]
-        public Customer Customer { get; set; }
+        public Customer? Customer { get; set; }
     }
 }

@@ -1,12 +1,16 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using OrderApplication.Business.Service.Abstraction.Mongo;
 using OrderApplication.Business.Service.Concretion.Mongo;
+using OrderApplication.Business.Validation.Customer;
+using OrderApplication.Business.Validation.Order;
 using OrderApplication.Core.Business.Abstraction.RuleEngine;
 using OrderApplication.Core.Business.Concretion.RuleEngine;
 using OrderApplication.Core.Data.Abstraction.Mongo;
 using OrderApplication.Core.Data.Concretion;
 using OrderApplication.Core.Model.Util.AppSettings;
+using OrderApplication.Model.Document;
 
 namespace OrderApplication.Business.IoC
 {
@@ -31,10 +35,17 @@ namespace OrderApplication.Business.IoC
 
         public static void AddValidation(this IServiceCollection serviceCollection)
         {
-            #region Category
+            #region Customer
 
-            //serviceCollection.AddScoped<IValidator<NewDashboardItemModel>, NewDashboardItemValidation>();
-            //serviceCollection.AddScoped<IValidator<UpdateDashboardItemModel>, UpdateDashboardItemValidation>();
+            serviceCollection.AddScoped<IValidator<Customer>, NewCustomerValidator>();
+            serviceCollection.AddScoped<IValidator<Customer>, UpdateCustomerValidator>();
+
+            #endregion
+
+            #region Order
+
+            serviceCollection.AddScoped<IValidator<Order>, NewOrderValidator>();
+            serviceCollection.AddScoped<IValidator<Order>, UpdateOrderValidator>();
 
             #endregion
         }
