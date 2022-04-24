@@ -85,6 +85,25 @@ namespace OrderApplication.Core.Data.Concretion
             return Task.Run(() => _collection.InsertOneAsync(document));
         }
 
+        public virtual TDocument InsertOne(TDocument document)
+        {
+            do
+            {
+                document.Id = ObjectId.GenerateNewId().ToString();
+            } while (this.FindByObjectId(document.Id.ToString()) != null);
+
+
+            _collection.InsertOne(document);
+            return document;
+        }
+
+        TDocument IMongoRepository<TDocument>.ReplaceOne(TDocument document)
+        {
+            var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, document.Id);
+            this._collection.FindOneAndReplace(filter, document);
+            return document;
+        }
+
         public virtual async Task InsertManyAsync(ICollection<TDocument> documents)
         {
             await _collection.InsertManyAsync(documents);

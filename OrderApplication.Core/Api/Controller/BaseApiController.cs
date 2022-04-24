@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OrderApplication.Core.Extension;
 using OrderApplication.Core.Model.Util.Response;
 
 namespace OrderApplication.Core.Api.Controller
@@ -21,7 +22,7 @@ namespace OrderApplication.Core.Api.Controller
             else return NotFound(new ApiResponse { IsSuccessful = false, ErrorMessageList = new List<string> { "Not found." } });
         }
 
-        protected virtual IActionResult ApiDocumentResponse(DataResponse result = null)
+        protected virtual IActionResult ApiResponse(DataResponse result = null)
         {
             if (result.IsSuccessful)
             {

@@ -109,59 +109,46 @@ namespace OrderApplication.Core.Business.Concretion.Mongo
 
 
 
-        public virtual DataResponse DeleteMany(Expression<Func<TDocument, bool>> filterExpression)
+        public virtual bool DeleteMany(Expression<Func<TDocument, bool>> filterExpression)
         {
             mongoRepository.DeleteMany(filterExpression);
-            return new DataResponse();
+            if (mongoRepository.FindOne(filterExpression) == null)
+                return true;
+            else
+                return false;
         }
 
-        public virtual DataResponse DeleteOne(Expression<Func<TDocument, bool>> filterExpression)
+        public virtual bool DeleteOne(Expression<Func<TDocument, bool>> filterExpression)
         {
             mongoRepository.DeleteOne(filterExpression);
-            return new DataResponse();
+            if (mongoRepository.FindOne(filterExpression) == null)
+                return true;
+            else
+                return false;
         }
 
-        public virtual DataResponse InsertMany(ICollection<TDocument> documents)
+        public virtual void InsertMany(ICollection<TDocument> documents)
         {
             mongoRepository.InsertMany(documents);
-            return new DataResponse();
         }
 
-        public virtual DataResponse ReplaceOne(TDocument document)
+        public virtual TDocument ReplaceOne(TDocument document)
         {
-            mongoRepository.ReplaceOneAsync(document);
-            Thread.Sleep(100);
-            var updateDocument = mongoRepository.FindByObjectId(document.Id.ToString());
-            if (updateDocument != null)
-                return new SuccessDataResponse { Document = updateDocument };
-            else
-                return ErrorDataResponse(ErrorConstant.MODEL_DID_NOT_UPDATED);
+            return mongoRepository.ReplaceOne(document);
         }
 
-        public virtual DataResponse InsertOne(TDocument document)
+        public virtual TDocument InsertOne(TDocument document)
         {
-            do
-            {
-                document.Id = ObjectId.GenerateNewId().ToString();
-            } while (mongoRepository.FindByObjectId(document.Id.ToString()) != null);
-
-            mongoRepository.InsertOneAsync(document);
-            Thread.Sleep(100);
-
-            var newDocument = mongoRepository.FindByObjectId(document.Id.ToString());
-            if (newDocument != null)
-                return new SuccessDataResponse { Document = newDocument };
-            else
-                return ErrorDataResponse(ErrorConstant.MODEL_DID_NOT_INSERTED);
+            return mongoRepository.InsertOne(document);
         }
 
-        public DataResponse DeleteOne(string id)
+        public bool DeleteOne(string id)
         {
             mongoRepository.DeleteByIdAsync(id);
             if (mongoRepository.FindByObjectId(id) == null)
-                return new DataResponse() { IsSuccessful = true };
+                return true;
             else
-                return ErrorDataResponse(ErrorConstant.MODEL_DID_NOT_DELETED);
+                return false;
         }
 
 

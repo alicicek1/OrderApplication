@@ -7,7 +7,10 @@ using OrderApplication.Core.Model.Util.Aspect;
 using OrderApplication.Core.Model.Util.Response;
 using OrderApplication.Model.Contant.Error;
 using OrderApplication.Model.Document;
+using OrderApplication.Model.Document.Common.Customer;
+using OrderApplication.Model.Document.Common.Order;
 using OrderApplication.Model.Util.Request;
+using System.Net;
 using System.Reflection;
 
 namespace OrderApplication.Business.Service.Concretion.Mongo
@@ -46,27 +49,33 @@ namespace OrderApplication.Business.Service.Concretion.Mongo
         }
 
         [ValidationAspect(typeof(NewOrderValidator))]
-        public override DataResponse InsertOne(Order document)
+        public DataResponse Add(Order document)
         {
             DataResponse response = businessRuleEngine.Validate(CheckProperties(document));
             if (!response.IsSuccessful)
                 return response;
 
-            response = base.InsertOne(document);
+            Order insertedOrder = base.InsertOne(document);
 
-            return response;
+            if (insertedOrder != null)
+                return new DataResponse { Document = insertedOrder };
+            else
+                return new DataResponse { ErrorMessageList = new List<string> { "An error occured while inserting." }, ErrorCode = "", HttpStatusCode = HttpStatusCode.BadRequest };
         }
 
         [ValidationAspect(typeof(UpdateOrderValidator))]
-        public override DataResponse ReplaceOne(Order document)
+        public DataResponse Update(Order document)
         {
             DataResponse response = businessRuleEngine.Validate(CheckProperties(document));
             if (!response.IsSuccessful)
                 return response;
 
-            response = base.ReplaceOne(document);
+            Order updatedOrder = base.ReplaceOne(document);
 
-            return response;
+            if (updatedOrder != null)
+                return new DataResponse { Document = updatedOrder };
+            else
+                return new DataResponse { ErrorMessageList = new List<string> { "An error occured while updated." }, ErrorCode = "", HttpStatusCode = HttpStatusCode.BadRequest };
         }
 
         public DataResponse ChangeStatus(ChangeStatusRequestModel changeStatusRequestModel)
@@ -78,7 +87,7 @@ namespace OrderApplication.Business.Service.Concretion.Mongo
             TempOrder.Status = changeStatusRequestModel.Status;
             TempOrder.UpdatedAt = DateTime.Now;
 
-            response = base.ReplaceOne(TempOrder);
+            response = this.Update(TempOrder);
 
             return response;
         }
@@ -136,9 +145,10 @@ namespace OrderApplication.Business.Service.Concretion.Mongo
                 }
                 else
                 {
+                    if (document.GetType().Name == nameof(NewOrderModel) && item.Name == nameof(Customer.Id))
+                        continue;
                     if (item.Name == nameof(Order.UpdatedAt) ||
-                        item.Name == nameof(Order.Customer) ||
-                        item.Name == nameof(Order.Id))
+                        item.Name == nameof(Order.Customer))
                         continue;
                     return ErrorDataResponse(OrderErrorConstant.MODEL_PROPERTY_CANNOT_BE_NULL(item.Name));
                 }

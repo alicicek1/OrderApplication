@@ -31,25 +31,25 @@ namespace OrderApplication.Api.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] NewOrderModel order)
         {
-            return ApiDocumentResponse(orderService.InsertOne(order));
+            return ApiResponse(orderService.Add(order));
         }
 
         [HttpPut]
         public IActionResult Put([FromBody] UpdateOrderModel order)
         {
-            return ApiDocumentResponse(orderService.ReplaceOne(order));
+            return ApiResponse(orderService.Update(order));
         }
 
         [HttpDelete]
         public IActionResult Delete(string id)
         {
-            return ApiDocumentResponse(orderService.DeleteOne(id));
+            return ApiResponse(orderService.DeleteOne(id));
         }
 
         [HttpPut("ChangeStatus")]
         public IActionResult ChangeStatus(ChangeStatusRequestModel changeStatusRequestModel)
         {
-            return ApiDocumentResponse(orderService.ChangeStatus(changeStatusRequestModel));
+            return ApiResponse(orderService.ChangeStatus(changeStatusRequestModel));
         }
     }
 }

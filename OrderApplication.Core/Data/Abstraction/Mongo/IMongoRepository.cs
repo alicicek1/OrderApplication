@@ -25,11 +25,11 @@ namespace OrderApplication.Core.Data.Abstraction.Mongo
         Task DeleteByIdAsync(string id);
 
 
+        TDocument InsertOne(TDocument document);
+        TDocument ReplaceOne(TDocument document);
         void InsertMany(ICollection<TDocument> documents);
-        void ReplaceOne(TDocument document);
         void DeleteOne(Expression<Func<TDocument, bool>> filterExpression);
         void DeleteMany(Expression<Func<TDocument, bool>> filterExpression);
-
 
         long GetCount();
         long GetCountBy(FilterDefinition<TDocument> filterExpression);

@@ -28,12 +28,12 @@ namespace OrderApplication.Core.Business.Abstraction.Mongo
 
 
 
-        DataResponse InsertMany(ICollection<TDocument> documents);
-        DataResponse ReplaceOne(TDocument document);
-        DataResponse InsertOne(TDocument document);
-        DataResponse DeleteOne(Expression<Func<TDocument, bool>> filterExpression);
-        DataResponse DeleteOne(string id);
-        DataResponse DeleteMany(Expression<Func<TDocument, bool>> filterExpression);
+        void InsertMany(ICollection<TDocument> documents);
+        TDocument ReplaceOne(TDocument document);
+        TDocument InsertOne(TDocument document);
+        bool DeleteOne(Expression<Func<TDocument, bool>> filterExpression);
+        bool DeleteOne(string id);
+        bool DeleteMany(Expression<Func<TDocument, bool>> filterExpression);
 
 
         long GetCount();

@@ -29,19 +29,19 @@ namespace OrderApplication.Api.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] NewCustomerModel customer)
         {
-            return ApiDocumentResponse(customerService.InsertOne(customer));
+            return ApiResponse(customerService.Add(customer));
         }
 
         [HttpPut]
         public IActionResult Put([FromBody] UpdateCustomerModel customer)
         {
-            return ApiDocumentResponse(customerService.ReplaceOne(customer));
+            return ApiResponse(customerService.Update(customer));
         }
 
         [HttpDelete]
         public IActionResult Delete(string id)
         {
-            return ApiDocumentResponse(customerService.DeleteOne(id));
+            return ApiResponse(customerService.DeleteOne(id));
         }
     }
 }
