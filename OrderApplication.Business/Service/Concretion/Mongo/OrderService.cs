@@ -51,7 +51,7 @@ namespace OrderApplication.Business.Service.Concretion.Mongo
         [ValidationAspect(typeof(NewOrderValidator))]
         public DataResponse Add(Order document)
         {
-            DataResponse response = businessRuleEngine.Validate(CheckProperties(document));
+            DataResponse response = businessRuleEngine.Validate(CheckInsertProperties(document));
             if (!response.IsSuccessful)
                 return response;
 
@@ -66,7 +66,7 @@ namespace OrderApplication.Business.Service.Concretion.Mongo
         [ValidationAspect(typeof(UpdateOrderValidator))]
         public DataResponse Update(Order document)
         {
-            DataResponse response = businessRuleEngine.Validate(CheckProperties(document));
+            DataResponse response = businessRuleEngine.Validate(CheckUpdateProperties(document));
             if (!response.IsSuccessful)
                 return response;
 
@@ -80,7 +80,7 @@ namespace OrderApplication.Business.Service.Concretion.Mongo
 
         public DataResponse ChangeStatus(ChangeStatusRequestModel changeStatusRequestModel)
         {
-            DataResponse response = businessRuleEngine.Validate(CheckModelIfExist(changeStatusRequestModel));
+            DataResponse response = businessRuleEngine.Validate(CheckChangeStatusRequestModel(changeStatusRequestModel));
             if (!response.IsSuccessful)
                 return response;
 
@@ -92,7 +92,7 @@ namespace OrderApplication.Business.Service.Concretion.Mongo
             return response;
         }
 
-        private DataResponse CheckModelIfExist(ChangeStatusRequestModel changeStatusRequestModel)
+        private DataResponse CheckChangeStatusRequestModel(ChangeStatusRequestModel changeStatusRequestModel)
         {
             if (changeStatusRequestModel == null)
                 return ErrorDataResponse(OrderErrorConstant.MODEL_CANNOT_BE_NULL);
@@ -109,7 +109,7 @@ namespace OrderApplication.Business.Service.Concretion.Mongo
             return new DataResponse { IsSuccessful = true };
         }
 
-        private DataResponse CheckProperties(Order document)
+        private DataResponse CheckInsertProperties(Order document)
         {
             if (document == null)
                 return ErrorDataResponse(OrderErrorConstant.MODEL_CANNOT_BE_NULL);
@@ -153,6 +153,20 @@ namespace OrderApplication.Business.Service.Concretion.Mongo
                     return ErrorDataResponse(OrderErrorConstant.MODEL_PROPERTY_CANNOT_BE_NULL(item.Name));
                 }
             }
+
+            return new DataResponse { IsSuccessful = true };
+        }
+        private DataResponse CheckUpdateProperties(Order document)
+        {
+            if (document == null)
+                return ErrorDataResponse(OrderErrorConstant.MODEL_CANNOT_BE_NULL);
+
+            if (string.IsNullOrWhiteSpace(document.Id))
+                return ErrorDataResponse(OrderErrorConstant.MODEL_PROPERTY_CANNOT_BE_NULL(nameof(document.Id)));
+
+            TempOrder = this.FindByObjectId(document.Id);
+            if (TempOrder == null)
+                return ErrorDataResponse(OrderErrorConstant.NOT_FOUND);
 
             return new DataResponse { IsSuccessful = true };
         }

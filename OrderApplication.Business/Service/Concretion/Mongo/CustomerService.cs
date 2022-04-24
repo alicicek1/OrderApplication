@@ -17,6 +17,7 @@ namespace OrderApplication.Business.Service.Concretion.Mongo
     public class CustomerService : MongoService<Customer>, ICustomerService
     {
         private readonly IBusinessRuleEngine businessRuleEngine;
+
         public CustomerService(IMongoRepository<Customer> _mongoRepository, IBusinessRuleEngine businessRuleEngine) : base(_mongoRepository)
         {
             this.businessRuleEngine = businessRuleEngine;
@@ -25,7 +26,7 @@ namespace OrderApplication.Business.Service.Concretion.Mongo
         [ValidationAspect(typeof(NewCustomerValidator))]
         public DataResponse Add(Customer document)
         {
-            DataResponse response = businessRuleEngine.Validate(CheckProperties(document));
+            DataResponse response = businessRuleEngine.Validate(CheckInsertProperties(document));
             if (!response.IsSuccessful)
                 return response;
 
@@ -40,7 +41,7 @@ namespace OrderApplication.Business.Service.Concretion.Mongo
         [ValidationAspect(typeof(UpdateCustomerValidator))]
         public DataResponse Update(Customer document)
         {
-            DataResponse response = businessRuleEngine.Validate(CheckProperties(document));
+            DataResponse response = businessRuleEngine.Validate(CheckUpdateProperties(document));
             if (!response.IsSuccessful)
                 return response;
 
@@ -52,7 +53,7 @@ namespace OrderApplication.Business.Service.Concretion.Mongo
                 return new DataResponse { ErrorMessageList = new List<string> { "An error occured while updated." }, ErrorCode = "", HttpStatusCode = HttpStatusCode.BadRequest };
         }
 
-        private DataResponse CheckProperties(Customer document)
+        private DataResponse CheckInsertProperties(Customer document)
         {
             if (document == null)
                 return ErrorDataResponse(OrderErrorConstant.MODEL_CANNOT_BE_NULL);
@@ -95,6 +96,20 @@ namespace OrderApplication.Business.Service.Concretion.Mongo
                     return ErrorDataResponse(OrderErrorConstant.MODEL_PROPERTY_CANNOT_BE_NULL(item.Name));
                 }
             }
+
+            return new DataResponse { IsSuccessful = true };
+        }
+
+        private DataResponse CheckUpdateProperties(Customer document)
+        {
+            if (document == null)
+                return ErrorDataResponse(OrderErrorConstant.MODEL_CANNOT_BE_NULL);
+
+            if (string.IsNullOrWhiteSpace(document.Id))
+                return ErrorDataResponse(OrderErrorConstant.MODEL_PROPERTY_CANNOT_BE_NULL(nameof(document.Id)));
+
+            if (this.FindByObjectId(document.Id) == null)
+                return ErrorDataResponse(OrderErrorConstant.NOT_FOUND);
 
             return new DataResponse { IsSuccessful = true };
         }
