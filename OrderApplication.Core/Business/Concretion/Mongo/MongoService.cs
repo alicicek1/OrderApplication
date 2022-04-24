@@ -130,6 +130,7 @@ namespace OrderApplication.Core.Business.Concretion.Mongo
         public virtual DataResponse ReplaceOne(TDocument document)
         {
             mongoRepository.ReplaceOneAsync(document);
+            Thread.Sleep(100);
             var updateDocument = mongoRepository.FindByObjectId(document.Id.ToString());
             if (updateDocument != null)
                 return new SuccessDataResponse { Document = updateDocument };
@@ -145,7 +146,7 @@ namespace OrderApplication.Core.Business.Concretion.Mongo
             } while (mongoRepository.FindByObjectId(document.Id.ToString()) != null);
 
             mongoRepository.InsertOneAsync(document);
-            Thread.Sleep(500);
+            Thread.Sleep(100);
 
             var newDocument = mongoRepository.FindByObjectId(document.Id.ToString());
             if (newDocument != null)

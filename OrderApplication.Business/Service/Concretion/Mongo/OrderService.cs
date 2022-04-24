@@ -40,7 +40,8 @@ namespace OrderApplication.Business.Service.Concretion.Mongo
         public override Order FindByObjectId(string id)
         {
             var response = base.FindByObjectId(id);
-            response.Customer = this.customerService.FindByObjectId(response.CustomerId);
+            if (response != null && !string.IsNullOrWhiteSpace(response.CustomerId))
+                response.Customer = this.customerService.FindByObjectId(response.CustomerId);
             return response;
         }
 
