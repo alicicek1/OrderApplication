@@ -123,7 +123,7 @@ namespace OrderApplication.Core.Data.Concretion
         public void DeleteById(string id)
         {
             var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, id);
-            _collection.FindOneAndDeleteAsync(filter);
+            _collection.FindOneAndDelete(filter);
         }
 
         public Task DeleteManyAsync(Expression<Func<TDocument, bool>> filterExpression)
