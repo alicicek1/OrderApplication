@@ -92,9 +92,9 @@ namespace OrderApplication.Core.Business.Concretion.Mongo
             return Task.Run(() => mongoRepository.ReplaceOneAsync(document));
         }
 
-        public virtual Task DeleteByIdAsync(string id)
+        public virtual void DeleteById(string id)
         {
-            return Task.Run(() => mongoRepository.DeleteByIdAsync(id));
+            mongoRepository.DeleteById(id);
         }
 
         public virtual Task DeleteManyAsync(Expression<Func<TDocument, bool>> filterExpression)
@@ -144,7 +144,7 @@ namespace OrderApplication.Core.Business.Concretion.Mongo
 
         public bool DeleteOne(string id)
         {
-            mongoRepository.DeleteByIdAsync(id);
+            mongoRepository.DeleteById(id);
             if (mongoRepository.FindByObjectId(id) == null)
                 return true;
             else

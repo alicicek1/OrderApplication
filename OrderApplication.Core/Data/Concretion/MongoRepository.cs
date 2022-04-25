@@ -120,13 +120,10 @@ namespace OrderApplication.Core.Data.Concretion
             return Task.Run(() => _collection.FindOneAndDeleteAsync(filterExpression));
         }
 
-        public Task DeleteByIdAsync(string id)
+        public void DeleteById(string id)
         {
-            return Task.Run(() =>
-            {
-                var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, id);
-                _collection.FindOneAndDeleteAsync(filter);
-            });
+            var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, id);
+            _collection.FindOneAndDeleteAsync(filter);
         }
 
         public Task DeleteManyAsync(Expression<Func<TDocument, bool>> filterExpression)

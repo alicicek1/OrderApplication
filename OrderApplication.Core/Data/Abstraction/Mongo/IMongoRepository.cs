@@ -22,7 +22,7 @@ namespace OrderApplication.Core.Data.Abstraction.Mongo
         Task ReplaceOneAsync(TDocument document);
         Task DeleteOneAsync(Expression<Func<TDocument, bool>> filterExpression);
         Task DeleteManyAsync(Expression<Func<TDocument, bool>> filterExpression);
-        Task DeleteByIdAsync(string id);
+        void DeleteById(string id);
 
 
         TDocument InsertOne(TDocument document);
