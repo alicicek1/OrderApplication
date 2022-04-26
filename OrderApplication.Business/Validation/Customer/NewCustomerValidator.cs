@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace OrderApplication.Business.Validation.Customer
 {
     public class NewCustomerValidator : CustomerValidator

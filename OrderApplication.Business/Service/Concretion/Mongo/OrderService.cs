@@ -10,6 +10,9 @@ using OrderApplication.Model.Document;
 using OrderApplication.Model.Document.Common.Customer;
 using OrderApplication.Model.Document.Common.Order;
 using OrderApplication.Model.Util.Request;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 
@@ -48,7 +51,6 @@ namespace OrderApplication.Business.Service.Concretion.Mongo
             return response;
         }
 
-        [ValidationAspect(typeof(NewOrderValidator))]
         public DataResponse Add(Order document)
         {
             DataResponse response = businessRuleEngine.Validate(CheckInsertProperties(document));
@@ -58,12 +60,11 @@ namespace OrderApplication.Business.Service.Concretion.Mongo
             Order insertedOrder = base.InsertOne(document);
 
             if (insertedOrder != null)
-                return new DataResponse { Document = insertedOrder };
+                return new DataResponse { Document = insertedOrder, HttpStatusCode = HttpStatusCode.Created };
             else
                 return new DataResponse { ErrorMessageList = new List<string> { "An error occured while inserting." }, ErrorCode = "", HttpStatusCode = HttpStatusCode.BadRequest };
         }
 
-        [ValidationAspect(typeof(UpdateOrderValidator))]
         public DataResponse Update(Order document)
         {
             DataResponse response = businessRuleEngine.Validate(CheckUpdateProperties(document));
@@ -73,7 +74,7 @@ namespace OrderApplication.Business.Service.Concretion.Mongo
             Order updatedOrder = base.ReplaceOne(document);
 
             if (updatedOrder != null)
-                return new DataResponse { Document = updatedOrder };
+                return new DataResponse { Document = updatedOrder, HttpStatusCode = HttpStatusCode.Created };
             else
                 return new DataResponse { ErrorMessageList = new List<string> { "An error occured while updated." }, ErrorCode = "", HttpStatusCode = HttpStatusCode.BadRequest };
         }

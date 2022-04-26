@@ -9,6 +9,8 @@ using OrderApplication.Model.Contant.Error;
 using OrderApplication.Model.Document;
 using OrderApplication.Model.Document.Common.Customer;
 using OrderApplication.Model.Document.Common.Order;
+using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Reflection;
 
@@ -23,7 +25,6 @@ namespace OrderApplication.Business.Service.Concretion.Mongo
             this.businessRuleEngine = businessRuleEngine;
         }
 
-        [ValidationAspect(typeof(NewCustomerValidator))]
         public DataResponse Add(Customer document)
         {
             DataResponse response = businessRuleEngine.Validate(CheckInsertProperties(document));
@@ -33,12 +34,12 @@ namespace OrderApplication.Business.Service.Concretion.Mongo
             Customer insertedCustomer = base.InsertOne(document);
 
             if (insertedCustomer != null)
-                return new DataResponse { Document = insertedCustomer };
+                return new DataResponse { Document = insertedCustomer, HttpStatusCode = HttpStatusCode.Created };
             else
                 return new DataResponse { ErrorMessageList = new List<string> { "An error occured while inserting." }, ErrorCode = "", HttpStatusCode = HttpStatusCode.BadRequest };
         }
 
-        [ValidationAspect(typeof(UpdateCustomerValidator))]
+
         public DataResponse Update(Customer document)
         {
             DataResponse response = businessRuleEngine.Validate(CheckUpdateProperties(document));
@@ -48,7 +49,7 @@ namespace OrderApplication.Business.Service.Concretion.Mongo
             Customer updatedCustomer = base.ReplaceOne(document);
 
             if (updatedCustomer != null)
-                return new DataResponse { Document = updatedCustomer };
+                return new DataResponse { Document = updatedCustomer, HttpStatusCode = HttpStatusCode.Created };
             else
                 return new DataResponse { ErrorMessageList = new List<string> { "An error occured while updated." }, ErrorCode = "", HttpStatusCode = HttpStatusCode.BadRequest };
         }

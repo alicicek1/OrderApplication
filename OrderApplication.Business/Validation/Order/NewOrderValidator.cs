@@ -1,5 +1,7 @@
 ﻿
 
+using System;
+
 namespace OrderApplication.Business.Validation.Order
 {
     public class NewOrderValidator : OrderValidator

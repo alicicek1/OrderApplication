@@ -1,6 +1,4 @@
-﻿
-
-using Castle.DynamicProxy;
+﻿using Castle.DynamicProxy;
 
 namespace OrderApplication.Core.Model.Util.Attribute
 {

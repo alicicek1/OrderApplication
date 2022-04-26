@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
 using OrderApplication.Core.Model.Document;
+using System;
+using System.Linq;
 using System.Reflection;
 
 namespace OrderApplication.Business.Validation
